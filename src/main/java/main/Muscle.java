@@ -1,29 +1,35 @@
 package main;
 
 
-public class Muscle {
+import java.io.Serializable;
 
-    private double degree;
+public class Muscle extends Output implements Serializable {
+
     private double maxForce;
     private double minForce;
-    private int num;
 
-    public Muscle(int num) {
-        this.num = num;
-        degree = ((int) (Math.random() * 36)) * 10; //TODO too uniform???
-        maxForce = (Math.random() * (Constants.MAX_MUSCLE_FORCE - (Constants.MIN_MUSCLE_FORCE + Constants.MIN_MUSCLE_FORCE_DIFFERENCE) + 1)) + (Constants.MIN_MUSCLE_FORCE + Constants.MIN_MUSCLE_FORCE_DIFFERENCE);
-        minForce = (Math.random() * ((maxForce - Constants.MIN_MUSCLE_FORCE_DIFFERENCE) - Constants.MIN_MUSCLE_FORCE + 1)) + Constants.MIN_MUSCLE_FORCE;
+    public Muscle() {
+        super();
+        maxForce = Constants.round((Math.random() * (Constants.MAX_MUSCLE_FORCE - (Constants.MIN_MUSCLE_FORCE + Constants.MIN_MUSCLE_FORCE_DIFFERENCE) + 1)) + (Constants.MIN_MUSCLE_FORCE + Constants.MIN_MUSCLE_FORCE_DIFFERENCE));
+        minForce = Constants.round((Math.random() * ((maxForce - Constants.MIN_MUSCLE_FORCE_DIFFERENCE) - Constants.MIN_MUSCLE_FORCE + 1)) + Constants.MIN_MUSCLE_FORCE);
     }
 
-    public Muscle(Muscle muscle, int num) {
-        this.num = num;
-        degree = ((Math.random() * 10) + muscle.getDegree() - 5) % 360;
-        maxForce = Math.max(Constants.MIN_MUSCLE_FORCE + Constants.MIN_MUSCLE_FORCE_DIFFERENCE, Math.min(Constants.MAX_MUSCLE_FORCE, (Math.random() * 0.2) + muscle.maxForce - 0.1));
-        minForce = Math.max(Constants.MIN_MUSCLE_FORCE, Math.min(maxForce - Constants.MIN_MUSCLE_FORCE_DIFFERENCE, (Math.random() * 0.2) + muscle.maxForce - 0.1));
+    @Override
+    public void mutate() {
+        maxForce += (Math.random() * 0.2) - 0.1;
+        minForce = Math.min(maxForce - Constants.MIN_MUSCLE_FORCE_DIFFERENCE, minForce + (Math.random() * 0.2) - 0.1);
+        if (Math.random() < 0.1) {
+            if (Math.random() < 0.5) {
+                setDegree(getDegree() + 5);
+            } else {
+                setDegree(getDegree() - 5);
+            }
+        }
     }
 
-    public double getDegree() {
-        return degree;
+    @Override
+    public double getWeight() {
+        return maxForce * Constants.MUSCLE_WEIGHT_PER_FORCE;
     }
 
     public double getMaxForce() {
@@ -32,9 +38,5 @@ public class Muscle {
 
     public double getMinForce() {
         return minForce;
-    }
-
-    public int getNum() {
-        return num;
     }
 }

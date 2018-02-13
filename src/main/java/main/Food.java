@@ -1,28 +1,54 @@
 package main;
 
-public class Food {
+import java.io.Serializable;
+
+public class Food implements Serializable{
 
     private double x,y;
 
-    public Food(double ox, double oy) {
-        /*x = ox;
-        y = oy;
-        while (Math.hypot(x - ox, y - oy) != 200) {
-            x = (Math.random() * 801) + 100;
-            y = (Math.random() * 801) + 100;
-        }*/
-        if (ox < 500 && oy < 500) {
-            x = 650;
-            y = 650;
-        } else if (ox < 500) {
-            x = 650;
-            y = 350;
-        } else if (oy < 500) {
-            x = 350;
-            y = 650;
-        } else {
-            x = 350;
-            y = 350;
+    public Food(int foodCount) {
+        int num = foodCount % 10;
+        switch (num) {
+            case 0:
+                x = 187;
+                y = 617;
+                break;
+            case 1:
+                x = 323;
+                y = 184;
+                break;
+            case 2:
+                x = 692;
+                y = 107;
+                break;
+            case 3:
+                x = 163;
+                y = 395;
+                break;
+            case 4:
+                x = 112;
+                y = 290;
+                break;
+            case 5:
+                x = 120;
+                y = 169;
+                break;
+            case 6:
+                x = 188;
+                y = 485;
+                break;
+            case 7:
+                x = 318;
+                y = 642;
+                break;
+            case 8:
+                x = 474;
+                y = 234;
+                break;
+            default:
+                x = 664;
+                y = 160;
+                break;
         }
     }
 
